@@ -31,6 +31,7 @@ const footerLinks = {
     { name: 'Contact', href: '/contact' },
     { name: 'Privacy Policy', href: '/privacy-policy' },
     { name: 'Terms of Service', href: '/terms-of-service' },
+    { name: 'Cancellation & Refund', href: '/cancellation-refund' },
   ],
 };
 
