@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import "./globals.css";
+import "./suppress-warnings";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
