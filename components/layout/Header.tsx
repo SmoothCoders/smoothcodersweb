@@ -70,26 +70,26 @@ export default function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-[100] transition-all duration-700',
         isScrolled
-          ? 'bg-gray-950/95 backdrop-blur-2xl shadow-2xl shadow-blue-500/10 border-b border-blue-500/20'
-          : 'bg-gradient-to-b from-gray-950 via-gray-950/98 to-gray-950/95 backdrop-blur-xl'
+          ? 'bg-gray-900/95 backdrop-blur-2xl shadow-2xl shadow-blue-500/10 border-b border-gray-800'
+          : 'bg-gray-900 backdrop-blur-xl'
       )}
     >
       {/* Animated gradient line */}
       <motion.div 
-        className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+        className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"
         initial={{ opacity: 0 }}
         animate={{ opacity: isScrolled ? 1 : 0.5 }}
         transition={{ duration: 0.5 }}
       />
 
-      {/* Premium Top Bar - Dark Theme */}
+      {/* Premium Top Bar - Pure Black */}
       <motion.div 
         initial={{ height: 36 }}
         animate={{ height: isScrolled ? 0 : 36 }}
         transition={{ duration: 0.4, ease: 'easeInOut' }}
-        className="overflow-hidden bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-blue-600/10 border-b border-blue-500/10"
+        className="overflow-hidden bg-black border-b border-gray-800"
       >
-        <div className="container mx-auto px-4 h-full flex items-center justify-between text-xs text-gray-300">
+        <div className="container mx-auto px-4 h-full flex items-center justify-between text-xs text-gray-400">
           <div className="flex items-center gap-6">
             <motion.a 
               href={`mailto:${settings?.contactEmail || 'contact@smoothcoders.com'}`}
@@ -282,7 +282,7 @@ export default function Header() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="absolute top-full left-0 right-0 lg:hidden bg-gray-950/95 backdrop-blur-xl border-t border-blue-500/20 shadow-2xl shadow-blue-500/20"
+              className="absolute top-full left-0 right-0 lg:hidden bg-gray-900/95 backdrop-blur-xl border-t border-gray-800 shadow-2xl"
             >
               <div className="container mx-auto px-4 py-6">
                 <div className="space-y-2">

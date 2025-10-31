@@ -29,15 +29,23 @@ export default function RootLayout({
           setSettings(data.data);
           // Update favicon
           if (data.data.faviconUrl) {
-            const link = document.querySelector("link[rel='icon']") as HTMLLinkElement;
-            if (link) {
-              link.href = data.data.faviconUrl;
-            } else {
-              const newLink = document.createElement('link');
-              newLink.rel = 'icon';
-              newLink.href = data.data.faviconUrl;
-              document.head.appendChild(newLink);
-            }
+            // Remove existing favicon links
+            const existingLinks = document.querySelectorAll("link[rel*='icon']");
+            existingLinks.forEach(link => link.remove());
+            
+            // Add new favicon
+            const newLink = document.createElement('link');
+            newLink.rel = 'icon';
+            newLink.type = 'image/png';
+            newLink.href = data.data.faviconUrl;
+            document.head.appendChild(newLink);
+            
+            // Add shortcut icon for older browsers
+            const shortcutLink = document.createElement('link');
+            shortcutLink.rel = 'shortcut icon';
+            shortcutLink.type = 'image/png';
+            shortcutLink.href = data.data.faviconUrl;
+            document.head.appendChild(shortcutLink);
           }
           // Update title
           if (data.data.siteName && data.data.siteTagline) {
