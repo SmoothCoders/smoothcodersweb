@@ -100,29 +100,22 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo with Animation */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <motion.div
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-blue-500/50 transition-shadow">
-                <Sparkles className="h-5 w-5 text-white" />
-              </div>
-              <motion.div
-                className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </motion.div>
-            <div>
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="flex flex-col leading-none">
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent"
+                className="flex items-baseline gap-0.5"
               >
-                SmoothCoders
+                <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-purple-700 bg-clip-text text-transparent tracking-tight">
+                  SMOOTH
+                </span>
+                <span className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">
+                  CODERS
+                </span>
               </motion.div>
-              <div className="text-xs text-gray-500 font-medium">Digital Excellence</div>
+              <div className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5 ml-0.5">
+                Digital Excellence
+              </div>
             </div>
           </Link>
 
