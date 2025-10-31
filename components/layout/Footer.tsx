@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
@@ -9,7 +10,9 @@ import {
   Linkedin, 
   Mail, 
   Phone,
-  ArrowRight
+  ArrowRight,
+  Github,
+  Youtube
 } from 'lucide-react';
 import DynamicFooterGrid from './DynamicFooterGrid';
 
@@ -35,14 +38,30 @@ const footerLinks = {
   ],
 };
 
-const socialLinks = [
-  { name: 'Facebook', icon: Facebook, href: 'https://facebook.com' },
-  { name: 'Twitter', icon: Twitter, href: 'https://twitter.com' },
-  { name: 'Instagram', icon: Instagram, href: 'https://instagram.com' },
-  { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com' },
-];
-
 export default function Footer() {
+  const [settings, setSettings] = useState<any>(null);
+
+  // Fetch settings
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setSettings(data.data);
+        }
+      })
+      .catch(err => console.error('Failed to load settings:', err));
+  }, []);
+
+  const socialLinks = [
+    { name: 'Facebook', icon: Facebook, href: settings?.socialMedia?.facebook || 'https://facebook.com' },
+    { name: 'Twitter', icon: Twitter, href: settings?.socialMedia?.twitter || 'https://twitter.com' },
+    { name: 'Instagram', icon: Instagram, href: settings?.socialMedia?.instagram || 'https://instagram.com' },
+    { name: 'LinkedIn', icon: Linkedin, href: settings?.socialMedia?.linkedin || 'https://linkedin.com' },
+    ...(settings?.socialMedia?.youtube ? [{ name: 'YouTube', icon: Youtube, href: settings.socialMedia.youtube }] : []),
+    ...(settings?.socialMedia?.github ? [{ name: 'GitHub', icon: Github, href: settings.socialMedia.github }] : []),
+  ];
+
   return (
     <footer className="bg-gray-900 text-gray-300">
       {/* Dynamic City-Service Grid */}
@@ -54,24 +73,33 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <Link href="/" className="inline-block">
-              <motion.h3
-                whileHover={{ scale: 1.05 }}
-                className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
-              >
-                SmoothCoders
-              </motion.h3>
+              {settings?.footerLogoUrl ? (
+                <motion.img
+                  src={settings.footerLogoUrl}
+                  alt={settings.siteName || 'SmoothCoders'}
+                  className="h-12 w-auto object-contain"
+                  whileHover={{ scale: 1.05 }}
+                />
+              ) : (
+                <motion.h3
+                  whileHover={{ scale: 1.05 }}
+                  className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
+                >
+                  {settings?.siteName || 'SmoothCoders'}
+                </motion.h3>
+              )}
             </Link>
             <p className="text-sm text-gray-400">
               Transforming Ideas Into Digital Success. Your trusted partner for web development, mobile apps, and digital marketing.
             </p>
             <div className="space-y-2">
-              <a href="mailto:contact@smoothcoders.com" className="flex items-center gap-2 text-sm hover:text-blue-400 transition-colors">
+              <a href={`mailto:${settings?.contactEmail || 'contact@smoothcoders.com'}`} className="flex items-center gap-2 text-sm hover:text-blue-400 transition-colors">
                 <Mail className="h-4 w-4" />
-                contact@smoothcoders.com
+                {settings?.contactEmail || 'contact@smoothcoders.com'}
               </a>
-              <a href="tel:+919021311559" className="flex items-center gap-2 text-sm hover:text-blue-400 transition-colors">
+              <a href={`tel:${settings?.contactPhone || '+919021311559'}`} className="flex items-center gap-2 text-sm hover:text-blue-400 transition-colors">
                 <Phone className="h-4 w-4" />
-                +91 9021311559
+                {settings?.contactPhone || '+91 9021311559'}
               </a>
             </div>
           </div>

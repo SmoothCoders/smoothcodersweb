@@ -36,6 +36,7 @@ const navigation = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [settings, setSettings] = useState<any>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -45,6 +46,18 @@ export default function Header() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch settings
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setSettings(data.data);
+        }
+      })
+      .catch(err => console.error('Failed to load settings:', err));
   }, []);
 
   // Close mobile menu when route changes
@@ -71,26 +84,26 @@ export default function Header() {
         <div className="container mx-auto px-4 h-full flex items-center justify-between text-sm text-white">
           <div className="flex items-center gap-6">
             <motion.a 
-              href="mailto:contact@smoothcoders.com" 
+              href={`mailto:${settings?.contactEmail || 'contact@smoothcoders.com'}`}
               className="flex items-center gap-2 hover:text-blue-200 transition-colors"
               whileHover={{ scale: 1.05 }}
             >
               <Mail className="h-3.5 w-3.5" />
-              <span className="hidden md:inline font-medium">contact@smoothcoders.com</span>
+              <span className="hidden md:inline font-medium">{settings?.contactEmail || 'contact@smoothcoders.com'}</span>
             </motion.a>
             <motion.a 
-              href="tel:+919021311559" 
+              href={`tel:${settings?.contactPhone || '+919021311559'}`}
               className="flex items-center gap-2 hover:text-blue-200 transition-colors"
               whileHover={{ scale: 1.05 }}
             >
               <Phone className="h-3.5 w-3.5" />
-              <span className="hidden md:inline font-medium">+91 9021311559</span>
+              <span className="hidden md:inline font-medium">{settings?.contactPhone || '+91 9021311559'}</span>
             </motion.a>
           </div>
           <div className="hidden lg:flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Clock className="h-3.5 w-3.5" />
-              <span className="font-medium">Mon-Sat: 9AM-6PM</span>
+              <span className="font-medium">{settings?.businessHours || 'Mon-Sat: 9AM-6PM'}</span>
             </div>
           </div>
         </div>
@@ -101,22 +114,31 @@ export default function Header() {
         <nav className="flex items-center justify-between h-20">
           {/* Logo with Animation */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="flex flex-col leading-none">
-              <motion.div
+            {settings?.headerLogoUrl ? (
+              <motion.img
+                src={settings.headerLogoUrl}
+                alt={settings.siteName || 'SmoothCoders'}
+                className="h-12 md:h-14 w-auto object-contain"
                 whileHover={{ scale: 1.02 }}
-                className="flex items-baseline gap-0.5"
-              >
-                <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-purple-700 bg-clip-text text-transparent tracking-tight">
-                  SMOOTH
-                </span>
-                <span className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">
-                  CODERS
-                </span>
-              </motion.div>
-              <div className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5 ml-0.5">
-                Digital Excellence
+              />
+            ) : (
+              <div className="flex flex-col leading-none">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="flex items-baseline gap-0.5"
+                >
+                  <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-purple-700 bg-clip-text text-transparent tracking-tight">
+                    SMOOTH
+                  </span>
+                  <span className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">
+                    CODERS
+                  </span>
+                </motion.div>
+                <div className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5 ml-0.5">
+                  {settings?.siteTagline || 'Digital Excellence'}
+                </div>
               </div>
-            </div>
+            )}
           </Link>
 
           {/* Desktop Navigation with Icons */}
