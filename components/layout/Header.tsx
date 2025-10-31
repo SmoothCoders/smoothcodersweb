@@ -35,6 +35,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [settings, setSettings] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
 
   // Handle scroll
@@ -52,6 +53,7 @@ export default function Header() {
         const cached = localStorage.getItem('siteSettings');
         if (cached) {
           setSettings(JSON.parse(cached));
+          setIsLoading(false);
         }
         
         // Fetch fresh data
@@ -61,8 +63,10 @@ export default function Header() {
           setSettings(data.data);
           localStorage.setItem('siteSettings', JSON.stringify(data.data));
         }
+        setIsLoading(false);
       } catch (error) {
         console.error('Failed to load settings:', error);
+        setIsLoading(false);
       }
     };
     
@@ -105,28 +109,32 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            {settings?.headerLogoUrl ? (
-              <img
-                src={settings.headerLogoUrl}
-                alt={settings.siteName || 'SmoothCoders'}
-                style={{ width: `${settings.headerLogoWidth || 180}px` }}
-                className="h-auto object-contain"
-              />
-            ) : (
-              <div className="flex flex-col">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                    SMOOTH
-                  </span>
-                  <span className="text-2xl md:text-3xl font-black text-white">
-                    CODERS
-                  </span>
-                </div>
-                <div className="text-[10px] text-gray-400 tracking-wider">
-                  {settings?.siteTagline || 'Digital Excellence'}
-                </div>
-              </div>
+          <Link href="/" className="flex items-center min-w-[180px]">
+            {!isLoading && (
+              <>
+                {settings?.headerLogoUrl ? (
+                  <img
+                    src={settings.headerLogoUrl}
+                    alt={settings.siteName || 'SmoothCoders'}
+                    style={{ width: `${settings.headerLogoWidth || 180}px` }}
+                    className="h-auto object-contain"
+                  />
+                ) : (
+                  <div className="flex flex-col">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        SMOOTH
+                      </span>
+                      <span className="text-2xl md:text-3xl font-black text-white">
+                        CODERS
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-gray-400 tracking-wider">
+                      {settings?.siteTagline || 'Digital Excellence'}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </Link>
 
