@@ -285,3 +285,4 @@ For issues or questions:
 ---
 
 **Built with ❤️ by SmoothCoders Team**
+# 🚀 Auto-deploy is working!
