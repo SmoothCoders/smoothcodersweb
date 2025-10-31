@@ -38,7 +38,7 @@ export async function POST(
     
     // Update status if needed
     if (inquiry.status === 'pending' && sender === 'admin') {
-      inquiry.status = 'active';
+      inquiry.status = 'in-progress';
     }
     
     await inquiry.save();
