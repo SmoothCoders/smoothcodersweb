@@ -37,6 +37,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [settings, setSettings] = useState<any>(null);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -54,7 +55,9 @@ export default function Header() {
     const cachedSettings = localStorage.getItem('siteSettings');
     if (cachedSettings) {
       try {
-        setSettings(JSON.parse(cachedSettings));
+        const parsed = JSON.parse(cachedSettings);
+        setSettings(parsed);
+        setSettingsLoaded(true);
       } catch (e) {
         console.error('Failed to parse cached settings:', e);
       }
@@ -66,11 +69,15 @@ export default function Header() {
       .then(data => {
         if (data.success) {
           setSettings(data.data);
+          setSettingsLoaded(true);
           // Cache settings in localStorage
           localStorage.setItem('siteSettings', JSON.stringify(data.data));
         }
       })
-      .catch(err => console.error('Failed to load settings:', err));
+      .catch(err => {
+        console.error('Failed to load settings:', err);
+        setSettingsLoaded(true); // Set loaded even on error to show default logo
+      });
   }, []);
 
   // Close mobile menu when route changes
@@ -135,7 +142,7 @@ export default function Header() {
         <nav className="flex items-center justify-between h-20">
           {/* Logo with Animation */}
           <Link href="/" className="flex items-center gap-3 group relative">
-            {settings?.headerLogoUrl ? (
+            {settingsLoaded && settings?.headerLogoUrl ? (
               <motion.div
                 className="relative"
                 whileHover={{ scale: 1.05 }}
@@ -148,12 +155,12 @@ export default function Header() {
                 />
                 <img
                   src={settings.headerLogoUrl}
-                  alt={settings.siteName || 'SmoothCoders'}
+                  alt={settings?.siteName || 'SmoothCoders'}
                   className="h-auto object-contain relative z-10"
-                  style={{ width: `${settings.headerLogoWidth || 180}px` }}
+                  style={{ width: `${settings?.headerLogoWidth || 180}px` }}
                 />
               </motion.div>
-            ) : (
+            ) : settingsLoaded ? (
               <div className="flex flex-col leading-none relative">
                 <motion.div
                   className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg opacity-0 group-hover:opacity-100 blur-lg transition-all duration-500"
@@ -175,6 +182,8 @@ export default function Header() {
                   {settings?.siteTagline || 'Digital Excellence'}
                 </div>
               </div>
+            ) : (
+              <div className="h-14 w-48"></div>
             )}
           </Link>
 
@@ -185,35 +194,30 @@ export default function Header() {
               const isActive = pathname === item.href;
               
               return (
-                <motion.div
+                <Link
                   key={item.name}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="relative"
+                  href={item.href}
+                  className={cn(
+                    'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group',
+                    'hover:-translate-y-0.5 active:translate-y-0',
+                    isActive
+                      ? 'text-white bg-gradient-to-r from-blue-600 to-blue-500'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
+                  )}
                 >
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group',
-                      isActive
-                        ? 'text-white bg-gradient-to-r from-blue-600 to-blue-500'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
-                    )}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeBg"
-                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl"
-                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                      />
-                    )}
-                    <Icon className={cn(
-                      'h-4 w-4 transition-all relative z-10',
-                      isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-400'
-                    )} />
-                    <span className="relative z-10">{item.name}</span>
-                  </Link>
-                </motion.div>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeBg"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl -z-10"
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                  <Icon className={cn(
+                    'h-4 w-4 transition-all',
+                    isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-400'
+                  )} />
+                  <span>{item.name}</span>
+                </Link>
               );
             })}
           </div>
