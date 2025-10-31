@@ -48,13 +48,26 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Fetch settings
+  // Fetch settings with localStorage cache
   useEffect(() => {
+    // Try to load from localStorage first for instant display
+    const cachedSettings = localStorage.getItem('siteSettings');
+    if (cachedSettings) {
+      try {
+        setSettings(JSON.parse(cachedSettings));
+      } catch (e) {
+        console.error('Failed to parse cached settings:', e);
+      }
+    }
+
+    // Fetch fresh settings from API
     fetch('/api/settings')
       .then(res => res.json())
       .then(data => {
         if (data.success) {
           setSettings(data.data);
+          // Cache settings in localStorage
+          localStorage.setItem('siteSettings', JSON.stringify(data.data));
         }
       })
       .catch(err => console.error('Failed to load settings:', err));
@@ -172,16 +185,16 @@ export default function Header() {
               const isActive = pathname === item.href;
               
               return (
-                <Link
+                <motion.div
                   key={item.name}
-                  href={item.href}
-                  className="relative group"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative"
                 >
-                  <motion.div
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.95 }}
+                  <Link
+                    href={item.href}
                     className={cn(
-                      'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 relative',
+                      'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group',
                       isActive
                         ? 'text-white bg-gradient-to-r from-blue-600 to-blue-500'
                         : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
@@ -199,14 +212,8 @@ export default function Header() {
                       isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-400'
                     )} />
                     <span className="relative z-10">{item.name}</span>
-                    
-                    {/* Glow effect on hover */}
-                    <motion.div
-                      className="absolute inset-0 rounded-xl bg-blue-500/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"
-                      whileHover={{ scale: 1.2 }}
-                    />
-                  </motion.div>
-                </Link>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>

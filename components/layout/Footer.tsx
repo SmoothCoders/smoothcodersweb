@@ -41,13 +41,26 @@ const footerLinks = {
 export default function Footer() {
   const [settings, setSettings] = useState<any>(null);
 
-  // Fetch settings
+  // Fetch settings with localStorage cache
   useEffect(() => {
+    // Try to load from localStorage first for instant display
+    const cachedSettings = localStorage.getItem('siteSettings');
+    if (cachedSettings) {
+      try {
+        setSettings(JSON.parse(cachedSettings));
+      } catch (e) {
+        console.error('Failed to parse cached settings:', e);
+      }
+    }
+
+    // Fetch fresh settings from API
     fetch('/api/settings')
       .then(res => res.json())
       .then(data => {
         if (data.success) {
           setSettings(data.data);
+          // Cache settings in localStorage
+          localStorage.setItem('siteSettings', JSON.stringify(data.data));
         }
       })
       .catch(err => console.error('Failed to load settings:', err));
