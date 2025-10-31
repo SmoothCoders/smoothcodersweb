@@ -30,6 +30,7 @@ const navigation = [
   { name: 'Blog', href: '/admin/blog', icon: FileText },
   { name: 'Contacts', href: '/admin/contacts', icon: MessageSquare },
   { name: 'Payments', href: '/admin/payments', icon: CreditCard },
+  { name: 'Site Settings', href: '/admin/settings', icon: Settings },
   { name: 'SEO Settings', href: '/admin/seo', icon: Settings },
 ];
 
