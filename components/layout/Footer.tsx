@@ -77,7 +77,8 @@ export default function Footer() {
                 <motion.img
                   src={settings.footerLogoUrl}
                   alt={settings.siteName || 'SmoothCoders'}
-                  className="h-12 w-auto object-contain"
+                  className="h-auto object-contain"
+                  style={{ width: `${settings.footerLogoWidth || 180}px` }}
                   whileHover={{ scale: 1.05 }}
                 />
               ) : (

@@ -136,7 +136,8 @@ export default function Header() {
                 <img
                   src={settings.headerLogoUrl}
                   alt={settings.siteName || 'SmoothCoders'}
-                  className="h-12 md:h-14 w-auto object-contain relative z-10 brightness-0 invert"
+                  className="h-auto object-contain relative z-10"
+                  style={{ width: `${settings.headerLogoWidth || 180}px` }}
                 />
               </motion.div>
             ) : (

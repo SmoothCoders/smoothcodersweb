@@ -14,9 +14,17 @@ const SettingsSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  headerLogoWidth: {
+    type: Number,
+    default: 180
+  },
   footerLogoUrl: {
     type: String,
     default: ''
+  },
+  footerLogoWidth: {
+    type: Number,
+    default: 180
   },
   faviconUrl: {
     type: String,

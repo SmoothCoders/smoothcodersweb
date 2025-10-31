@@ -31,7 +31,9 @@ export default function SettingsPage() {
     siteName: '',
     siteTagline: '',
     headerLogoUrl: '',
+    headerLogoWidth: 180,
     footerLogoUrl: '',
+    footerLogoWidth: 180,
     faviconUrl: '',
     contactEmail: '',
     contactPhone: '',
@@ -261,6 +263,18 @@ export default function SettingsPage() {
                     className="hidden"
                   />
                 </label>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Logo Width (px)</label>
+                  <input
+                    type="number"
+                    min="50"
+                    max="500"
+                    value={settings.headerLogoWidth}
+                    onChange={(e) => updateField('headerLogoWidth', parseInt(e.target.value))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    placeholder="180"
+                  />
+                </div>
                 <p className="text-xs text-gray-500">Recommended: 200x60px, Max 2MB</p>
               </div>
             </div>
@@ -284,6 +298,18 @@ export default function SettingsPage() {
                     className="hidden"
                   />
                 </label>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Logo Width (px)</label>
+                  <input
+                    type="number"
+                    min="50"
+                    max="500"
+                    value={settings.footerLogoWidth}
+                    onChange={(e) => updateField('footerLogoWidth', parseInt(e.target.value))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    placeholder="180"
+                  />
+                </div>
                 <p className="text-xs text-gray-500">Recommended: 200x60px, Max 2MB</p>
               </div>
             </div>
