@@ -19,6 +19,9 @@ export async function GET() {
     const publicSettings = {
       siteName: settings.siteName,
       siteTagline: settings.siteTagline,
+      headerLogoUrl: settings.headerLogoUrl,
+      footerLogoUrl: settings.footerLogoUrl,
+      faviconUrl: settings.faviconUrl,
       contactEmail: settings.contactEmail,
       contactPhone: settings.contactPhone,
       contactAddress: settings.contactAddress,
