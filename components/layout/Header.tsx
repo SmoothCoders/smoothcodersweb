@@ -68,41 +68,49 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-[100] transition-all duration-500',
+        'fixed top-0 left-0 right-0 z-[100] transition-all duration-700',
         isScrolled
-          ? 'bg-white/80 backdrop-blur-xl shadow-lg border-b border-gray-100'
-          : 'bg-gradient-to-b from-white/95 to-white/50 backdrop-blur-sm'
+          ? 'bg-gray-950/95 backdrop-blur-2xl shadow-2xl shadow-blue-500/10 border-b border-blue-500/20'
+          : 'bg-gradient-to-b from-gray-950 via-gray-950/98 to-gray-950/95 backdrop-blur-xl'
       )}
     >
-      {/* Premium Top Bar */}
+      {/* Animated gradient line */}
       <motion.div 
-        initial={{ height: 40 }}
-        animate={{ height: isScrolled ? 0 : 40 }}
-        transition={{ duration: 0.3 }}
-        className="overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600"
+        className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isScrolled ? 1 : 0.5 }}
+        transition={{ duration: 0.5 }}
+      />
+
+      {/* Premium Top Bar - Dark Theme */}
+      <motion.div 
+        initial={{ height: 36 }}
+        animate={{ height: isScrolled ? 0 : 36 }}
+        transition={{ duration: 0.4, ease: 'easeInOut' }}
+        className="overflow-hidden bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-blue-600/10 border-b border-blue-500/10"
       >
-        <div className="container mx-auto px-4 h-full flex items-center justify-between text-sm text-white">
+        <div className="container mx-auto px-4 h-full flex items-center justify-between text-xs text-gray-300">
           <div className="flex items-center gap-6">
             <motion.a 
               href={`mailto:${settings?.contactEmail || 'contact@smoothcoders.com'}`}
-              className="flex items-center gap-2 hover:text-blue-200 transition-colors"
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 hover:text-blue-400 transition-all duration-300 group"
+              whileHover={{ x: 2 }}
             >
-              <Mail className="h-3.5 w-3.5" />
+              <Mail className="h-3.5 w-3.5 group-hover:text-blue-400 transition-colors" />
               <span className="hidden md:inline font-medium">{settings?.contactEmail || 'contact@smoothcoders.com'}</span>
             </motion.a>
             <motion.a 
               href={`tel:${settings?.contactPhone || '+919021311559'}`}
-              className="flex items-center gap-2 hover:text-blue-200 transition-colors"
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 hover:text-blue-400 transition-all duration-300 group"
+              whileHover={{ x: 2 }}
             >
-              <Phone className="h-3.5 w-3.5" />
+              <Phone className="h-3.5 w-3.5 group-hover:text-blue-400 transition-colors" />
               <span className="hidden md:inline font-medium">{settings?.contactPhone || '+91 9021311559'}</span>
             </motion.a>
           </div>
           <div className="hidden lg:flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <Clock className="h-3.5 w-3.5" />
+              <Clock className="h-3.5 w-3.5 text-blue-400" />
               <span className="font-medium">{settings?.businessHours || 'Mon-Sat: 9AM-6PM'}</span>
             </div>
           </div>
@@ -113,28 +121,43 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-20">
           {/* Logo with Animation */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-3 group relative">
             {settings?.headerLogoUrl ? (
-              <motion.img
-                src={settings.headerLogoUrl}
-                alt={settings.siteName || 'SmoothCoders'}
-                className="h-12 md:h-14 w-auto object-contain"
-                whileHover={{ scale: 1.02 }}
-              />
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
+                <img
+                  src={settings.headerLogoUrl}
+                  alt={settings.siteName || 'SmoothCoders'}
+                  className="h-12 md:h-14 w-auto object-contain relative z-10 brightness-0 invert"
+                />
+              </motion.div>
             ) : (
-              <div className="flex flex-col leading-none">
+              <div className="flex flex-col leading-none relative">
+                <motion.div
+                  className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg opacity-0 group-hover:opacity-100 blur-lg transition-all duration-500"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="flex items-baseline gap-0.5"
+                  className="flex items-baseline gap-0.5 relative z-10"
                 >
-                  <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-purple-700 bg-clip-text text-transparent tracking-tight">
+                  <span className="text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-400 via-blue-300 to-purple-400 bg-clip-text text-transparent tracking-tight animate-gradient">
                     SMOOTH
                   </span>
-                  <span className="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">
+                  <span className="text-2xl md:text-3xl font-black text-white tracking-tight">
                     CODERS
                   </span>
                 </motion.div>
-                <div className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5 ml-0.5">
+                <div className="text-[10px] text-gray-400 font-medium tracking-wider mt-1 ml-0.5 relative z-10">
                   {settings?.siteTagline || 'Digital Excellence'}
                 </div>
               </div>
@@ -142,7 +165,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation with Icons */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-1">
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -155,27 +178,33 @@ export default function Header() {
                 >
                   <motion.div
                     whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     className={cn(
-                      'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300',
+                      'flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 relative',
                       isActive
-                        ? 'text-blue-600 bg-blue-50'
-                        : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                        ? 'text-white bg-gradient-to-r from-blue-600 to-blue-500'
+                        : 'text-gray-300 hover:text-white hover:bg-gray-800/50'
                     )}
                   >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeBg"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl"
+                        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      />
+                    )}
                     <Icon className={cn(
-                      'h-4 w-4 transition-all',
-                      isActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-600'
+                      'h-4 w-4 transition-all relative z-10',
+                      isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-400'
                     )} />
-                    <span>{item.name}</span>
-                  </motion.div>
-                  
-                  {isActive && (
+                    <span className="relative z-10">{item.name}</span>
+                    
+                    {/* Glow effect on hover */}
                     <motion.div
-                      layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                      className="absolute inset-0 rounded-xl bg-blue-500/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"
+                      whileHover={{ scale: 1.2 }}
                     />
-                  )}
+                  </motion.div>
                 </Link>
               );
             })}
@@ -184,24 +213,37 @@ export default function Header() {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
             <Link href="/contact">
-              <Button 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl group"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <span>Get Started</span>
-                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+                <Button 
+                  className="bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 hover:from-blue-500 hover:via-purple-500 hover:to-purple-600 text-white shadow-lg shadow-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/60 transition-all duration-500 rounded-xl group relative overflow-hidden"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                  />
+                  <span className="relative z-10 font-semibold">Get Started</span>
+                  <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform relative z-10" />
+                </Button>
+              </motion.div>
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <motion.button
             whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={cn(
-              'lg:hidden p-2.5 rounded-xl transition-all duration-300',
+              'lg:hidden p-3 rounded-xl transition-all duration-300 relative overflow-hidden',
               isMobileMenuOpen 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50' 
+                : 'bg-gray-800/50 text-gray-300 hover:bg-gray-800 hover:text-white border border-gray-700/50'
             )}
           >
             <AnimatePresence mode="wait">
@@ -229,8 +271,8 @@ export default function Header() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm lg:hidden"
-              style={{ top: isScrolled ? '80px' : '120px' }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-md lg:hidden"
+              style={{ top: isScrolled ? '80px' : '116px' }}
             />
             
             {/* Menu Content */}
@@ -239,10 +281,10 @@ export default function Header() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="absolute top-full left-0 right-0 lg:hidden bg-white border-t border-gray-100 shadow-2xl"
+              className="absolute top-full left-0 right-0 lg:hidden bg-gray-950/95 backdrop-blur-xl border-t border-blue-500/20 shadow-2xl shadow-blue-500/20"
             >
               <div className="container mx-auto px-4 py-6">
-                <div className="space-y-1">
+                <div className="space-y-2">
                   {navigation.map((item, index) => {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
@@ -258,21 +300,28 @@ export default function Header() {
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={cn(
-                            'flex items-center gap-3 px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200 group',
+                            'flex items-center gap-3 px-4 py-4 rounded-xl text-base font-medium transition-all duration-300 group relative overflow-hidden',
                             isActive
-                              ? 'bg-gradient-to-r from-blue-50 to-purple-50 text-blue-600 shadow-sm'
-                              : 'text-gray-700 hover:bg-gray-50 active:bg-gray-100'
+                              ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
+                              : 'text-gray-300 hover:text-white hover:bg-gray-800/50 active:bg-gray-800'
                           )}
                         >
+                          {isActive && (
+                            <motion.div
+                              className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600"
+                              layoutId="mobileBg"
+                              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                            />
+                          )}
                           <div className={cn(
-                            'w-10 h-10 rounded-lg flex items-center justify-center transition-all',
+                            'w-11 h-11 rounded-lg flex items-center justify-center transition-all relative z-10',
                             isActive 
-                              ? 'bg-blue-600 text-white' 
-                              : 'bg-gray-100 text-gray-600 group-hover:bg-blue-50 group-hover:text-blue-600'
+                              ? 'bg-white/20 text-white' 
+                              : 'bg-gray-800 text-gray-400 group-hover:bg-blue-500/20 group-hover:text-blue-400'
                           )}>
                             <Icon className="h-5 w-5" />
                           </div>
-                          <span className="flex-1">{item.name}</span>
+                          <span className="flex-1 relative z-10">{item.name}</span>
                           {isActive && (
                             <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                           )}
@@ -287,24 +336,36 @@ export default function Header() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: navigation.length * 0.05 }}
-                  className="mt-6 pt-6 border-t border-gray-100"
+                  className="mt-6 pt-6 border-t border-blue-500/20"
                 >
                   <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-6 rounded-xl shadow-lg hover:shadow-xl transition-all group text-lg font-semibold">
-                      <span>Get Started Today</span>
-                      <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
+                    <motion.div whileTap={{ scale: 0.95 }}>
+                      <Button className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 hover:from-blue-500 hover:via-purple-500 hover:to-purple-600 text-white py-6 rounded-xl shadow-lg shadow-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/60 transition-all group text-lg font-semibold relative overflow-hidden">
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600"
+                          initial={{ x: '-100%' }}
+                          whileHover={{ x: '100%' }}
+                          transition={{ duration: 0.6 }}
+                        />
+                        <span className="relative z-10">Get Started Today</span>
+                        <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform relative z-10" />
+                      </Button>
+                    </motion.div>
                   </Link>
 
                   {/* Mobile Contact Info */}
-                  <div className="mt-4 p-4 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl space-y-2">
-                    <a href="mailto:contact@smoothcoders.com" className="flex items-center gap-2 text-sm text-gray-700 hover:text-blue-600">
-                      <Mail className="h-4 w-4" />
-                      <span>contact@smoothcoders.com</span>
+                  <div className="mt-4 p-4 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-blue-600/10 rounded-xl space-y-3 border border-blue-500/20">
+                    <a href={`mailto:${settings?.contactEmail || 'contact@smoothcoders.com'}`} className="flex items-center gap-3 text-sm text-gray-300 hover:text-blue-400 transition-colors group">
+                      <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                        <Mail className="h-4 w-4" />
+                      </div>
+                      <span className="font-medium">{settings?.contactEmail || 'contact@smoothcoders.com'}</span>
                     </a>
-                    <a href="tel:+919021311559" className="flex items-center gap-2 text-sm text-gray-700 hover:text-blue-600">
-                      <Phone className="h-4 w-4" />
-                      <span>+91 9021311559</span>
+                    <a href={`tel:${settings?.contactPhone || '+919021311559'}`} className="flex items-center gap-3 text-sm text-gray-300 hover:text-blue-400 transition-colors group">
+                      <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                        <Phone className="h-4 w-4" />
+                      </div>
+                      <span className="font-medium">{settings?.contactPhone || '+91 9021311559'}</span>
                     </a>
                   </div>
                 </motion.div>
