@@ -27,11 +27,6 @@ export async function POST(request: NextRequest) {
       // 3. Update order status
       // 4. Trigger any other business logic
 
-        orderId: razorpay_order_id,
-        paymentId: razorpay_payment_id,
-        customer: customerDetails,
-      });
-
       return NextResponse.json({
         success: true,
         message: 'Payment verified successfully',
