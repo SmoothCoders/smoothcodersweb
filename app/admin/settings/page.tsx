@@ -16,7 +16,9 @@ import {
   MessageSquare,
   Shield,
   Eye,
-  EyeOff
+  EyeOff,
+  Upload,
+  Image as ImageIcon
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -28,6 +30,9 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<any>({
     siteName: '',
     siteTagline: '',
+    headerLogoUrl: '',
+    footerLogoUrl: '',
+    faviconUrl: '',
     contactEmail: '',
     contactPhone: '',
     contactAddress: '',
@@ -143,6 +148,30 @@ export default function SettingsPage() {
     }));
   };
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
+    }
+
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image size should be less than 2MB');
+      return;
+    }
+
+    // Convert to base64 and store temporarily
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      updateField(field, reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
   if (status === 'loading' || loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -190,7 +219,7 @@ export default function SettingsPage() {
             <Globe className="h-5 w-5 text-blue-600" />
             Site Identity
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Site Name</label>
               <input
@@ -208,6 +237,78 @@ export default function SettingsPage() {
                 onChange={(e) => updateField('siteTagline', e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
+            </div>
+          </div>
+
+          {/* Logo Uploads */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+            {/* Header Logo */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Header Logo</label>
+              <div className="space-y-2">
+                {settings.headerLogoUrl && (
+                  <div className="relative w-full h-24 border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
+                    <img src={settings.headerLogoUrl} alt="Header Logo" className="max-h-20 max-w-full object-contain" />
+                  </div>
+                )}
+                <label className="flex items-center justify-center gap-2 w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 cursor-pointer transition-colors bg-gray-50 hover:bg-blue-50">
+                  <Upload className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm text-gray-600">Upload Header Logo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleLogoUpload(e, 'headerLogoUrl')}
+                    className="hidden"
+                  />
+                </label>
+                <p className="text-xs text-gray-500">Recommended: 200x60px, Max 2MB</p>
+              </div>
+            </div>
+
+            {/* Footer Logo */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Footer Logo</label>
+              <div className="space-y-2">
+                {settings.footerLogoUrl && (
+                  <div className="relative w-full h-24 border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
+                    <img src={settings.footerLogoUrl} alt="Footer Logo" className="max-h-20 max-w-full object-contain" />
+                  </div>
+                )}
+                <label className="flex items-center justify-center gap-2 w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 cursor-pointer transition-colors bg-gray-50 hover:bg-blue-50">
+                  <Upload className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm text-gray-600">Upload Footer Logo</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleLogoUpload(e, 'footerLogoUrl')}
+                    className="hidden"
+                  />
+                </label>
+                <p className="text-xs text-gray-500">Recommended: 200x60px, Max 2MB</p>
+              </div>
+            </div>
+
+            {/* Favicon */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Favicon</label>
+              <div className="space-y-2">
+                {settings.faviconUrl && (
+                  <div className="relative w-full h-24 border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
+                    <img src={settings.faviconUrl} alt="Favicon" className="max-h-20 max-w-full object-contain" />
+                  </div>
+                )}
+                <label className="flex items-center justify-center gap-2 w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 cursor-pointer transition-colors bg-gray-50 hover:bg-blue-50">
+                  <ImageIcon className="h-4 w-4 text-gray-500" />
+                  <span className="text-sm text-gray-600">Upload Favicon</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleLogoUpload(e, 'faviconUrl')}
+                    className="hidden"
+                  />
+                </label>
+                <p className="text-xs text-gray-500">Recommended: 32x32px or 64x64px, Max 2MB</p>
+              </div>
             </div>
           </div>
         </div>
