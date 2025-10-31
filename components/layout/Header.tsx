@@ -52,18 +52,33 @@ export default function Header() {
         // Check cache first
         const cached = localStorage.getItem('siteSettings');
         if (cached) {
-          setSettings(JSON.parse(cached));
+          const parsedSettings = JSON.parse(cached);
+          setSettings(parsedSettings);
+          setIsLoading(false);
+          
+          // Fetch fresh data in background only if cache is old (> 5 minutes)
+          const cacheTime = localStorage.getItem('siteSettingsTime');
+          const now = Date.now();
+          if (!cacheTime || now - parseInt(cacheTime) > 300000) {
+            const res = await fetch('/api/settings');
+            const data = await res.json();
+            if (data.success && JSON.stringify(data.data) !== JSON.stringify(parsedSettings)) {
+              setSettings(data.data);
+              localStorage.setItem('siteSettings', JSON.stringify(data.data));
+              localStorage.setItem('siteSettingsTime', now.toString());
+            }
+          }
+        } else {
+          // No cache, fetch from API
+          const res = await fetch('/api/settings');
+          const data = await res.json();
+          if (data.success) {
+            setSettings(data.data);
+            localStorage.setItem('siteSettings', JSON.stringify(data.data));
+            localStorage.setItem('siteSettingsTime', Date.now().toString());
+          }
           setIsLoading(false);
         }
-        
-        // Fetch fresh data
-        const res = await fetch('/api/settings');
-        const data = await res.json();
-        if (data.success) {
-          setSettings(data.data);
-          localStorage.setItem('siteSettings', JSON.stringify(data.data));
-        }
-        setIsLoading(false);
       } catch (error) {
         console.error('Failed to load settings:', error);
         setIsLoading(false);

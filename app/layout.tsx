@@ -8,7 +8,11 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+});
 
 
 export default function RootLayout({
@@ -46,10 +50,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{settings?.siteName && settings?.siteTagline ? `${settings.siteName} - ${settings.siteTagline}` : 'SmoothCoders - Transforming Ideas Into Digital Success'}</title>
         <meta name="description" content="Leading web development and digital marketing agency in Pune. We create stunning websites, mobile apps, and drive digital growth for businesses." />
-        <link rel="icon" href="/favicon.ico" />
-        <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       </head>
       <body className={inter.className}>
         {!isAdminRoute && <Header />}

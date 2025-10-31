@@ -41,9 +41,9 @@ const footerLinks = {
 export default function Footer() {
   const [settings, setSettings] = useState<any>(null);
 
-  // Fetch settings with localStorage cache
+  // Fetch settings with localStorage cache (no API call, just use cache from Header)
   useEffect(() => {
-    // Try to load from localStorage first for instant display
+    // Only load from localStorage (Header handles API fetching)
     const cachedSettings = localStorage.getItem('siteSettings');
     if (cachedSettings) {
       try {
@@ -52,18 +52,6 @@ export default function Footer() {
         console.error('Failed to parse cached settings:', e);
       }
     }
-
-    // Fetch fresh settings from API
-    fetch('/api/settings')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setSettings(data.data);
-          // Cache settings in localStorage
-          localStorage.setItem('siteSettings', JSON.stringify(data.data));
-        }
-      })
-      .catch(err => console.error('Failed to load settings:', err));
   }, []);
 
   const socialLinks = [
