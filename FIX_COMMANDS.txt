@@ -1,0 +1,10 @@
+# ⚡ COPY-PASTE THESE COMMANDS EXACTLY
+
+# Step 1: Go to project directory
+cd /Users/mac/Work/Development/SmoothCoders/smoothcoders-app
+
+# Step 2: Run the fix
+node scripts/quick-fix-now.js
+
+# Step 3: If that works, restart server
+npm run dev

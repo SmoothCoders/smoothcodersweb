@@ -1,0 +1,200 @@
+{
+  "website-design-development": {
+    "pricingTiers": {
+      "basic": {
+        "name": "Basic",
+        "title": "One Product Shopify Store",
+        "description": "Branded One Product Store, Premium Theme, In-Depth Product Research with Logo",
+        "priceINR": 7000,
+        "priceUSD": 85,
+        "features": [
+          "Functional website",
+          "Responsive design",
+          "Content upload",
+          "E-commerce functionality",
+          "Payment Integration",
+          "Opt-in form"
+        ],
+        "deliveryDays": 3,
+        "revisions": "Unlimited",
+        "isPopular": false
+      },
+      "standard": {
+        "name": "Standard",
+        "title": "Professional Shopify Store",
+        "description": "Professional 20-Product Shopify Store + Winning Product Research + Branding + Logo with Graphics",
+        "priceINR": 23500,
+        "priceUSD": 285,
+        "features": [
+          "Functional website",
+          "Responsive design",
+          "Content upload",
+          "E-commerce functionality",
+          "Payment Integration",
+          "Opt-in form",
+          "Autoresponder integration",
+          "Speed optimization"
+        ],
+        "deliveryDays": 5,
+        "revisions": "Unlimited",
+        "isPopular": true
+      },
+      "premium": {
+        "name": "Premium",
+        "title": "Business Shopify Store",
+        "description": "Business 50-Products + Branding + SEO + Winning Product Research + Apps Installed",
+        "priceINR": 37000,
+        "priceUSD": 450,
+        "features": [
+          "Functional website",
+          "Responsive design",
+          "Content upload",
+          "E-commerce functionality",
+          "Payment Integration",
+          "Opt-in form",
+          "Autoresponder integration",
+          "Speed optimization",
+          "Hosting setup",
+          "Social media icons",
+          "Number of pages: 8",
+          "Plugins/extensions: 6",
+          "Number of products: 50"
+        ],
+        "deliveryDays": 7,
+        "revisions": "Unlimited",
+        "isPopular": false
+      }
+    }
+  },
+  "mobile-app-development": {
+    "pricingTiers": {
+      "basic": {
+        "name": "Basic",
+        "title": "Simple Mobile App",
+        "description": "Basic Android or iOS app with core features",
+        "priceINR": 15000,
+        "priceUSD": 180,
+        "features": [
+          "Single platform (Android or iOS)",
+          "5 screens",
+          "Basic UI/UX design",
+          "User authentication",
+          "Push notifications",
+          "App store submission"
+        ],
+        "deliveryDays": 14,
+        "revisions": "3",
+        "isPopular": false
+      },
+      "standard": {
+        "name": "Standard",
+        "title": "Professional Mobile App",
+        "description": "Cross-platform app with advanced features",
+        "priceINR": 35000,
+        "priceUSD": 425,
+        "features": [
+          "Both Android & iOS",
+          "10 screens",
+          "Custom UI/UX design",
+          "User authentication",
+          "Push notifications",
+          "API integration",
+          "Payment gateway",
+          "App store submission",
+          "3 months support"
+        ],
+        "deliveryDays": 21,
+        "revisions": "5",
+        "isPopular": true
+      },
+      "premium": {
+        "name": "Premium",
+        "title": "Enterprise Mobile App",
+        "description": "Full-featured enterprise mobile solution",
+        "priceINR": 65000,
+        "priceUSD": 790,
+        "features": [
+          "Both Android & iOS",
+          "Unlimited screens",
+          "Premium UI/UX design",
+          "Advanced authentication",
+          "Push notifications",
+          "Multiple API integrations",
+          "Payment gateway",
+          "Admin panel",
+          "Analytics integration",
+          "App store submission",
+          "6 months support",
+          "Priority updates"
+        ],
+        "deliveryDays": 30,
+        "revisions": "Unlimited",
+        "isPopular": false
+      }
+    }
+  },
+  "digital-marketing": {
+    "pricingTiers": {
+      "basic": {
+        "name": "Basic",
+        "title": "Social Media Starter",
+        "description": "Essential social media marketing package",
+        "priceINR": 8000,
+        "priceUSD": 95,
+        "features": [
+          "2 social platforms",
+          "10 posts per month",
+          "Basic graphics",
+          "Content calendar",
+          "Monthly report"
+        ],
+        "deliveryDays": 5,
+        "revisions": "2",
+        "isPopular": false
+      },
+      "standard": {
+        "name": "Standard",
+        "title": "Multi-Channel Marketing",
+        "description": "Comprehensive digital marketing across multiple channels",
+        "priceINR": 18000,
+        "priceUSD": 220,
+        "features": [
+          "4 social platforms",
+          "20 posts per month",
+          "Professional graphics",
+          "Content calendar",
+          "SEO optimization",
+          "Email marketing",
+          "Weekly reports",
+          "1 ad campaign"
+        ],
+        "deliveryDays": 10,
+        "revisions": "5",
+        "isPopular": true
+      },
+      "premium": {
+        "name": "Premium",
+        "title": "Full Marketing Strategy",
+        "description": "Complete digital marketing strategy with advanced targeting",
+        "priceINR": 35000,
+        "priceUSD": 425,
+        "features": [
+          "All social platforms",
+          "40 posts per month",
+          "Premium graphics + videos",
+          "Content calendar",
+          "Advanced SEO",
+          "Email marketing automation",
+          "Daily reports",
+          "3 ad campaigns",
+          "Influencer outreach",
+          "Competitor analysis",
+          "Dedicated account manager"
+        ],
+        "deliveryDays": 15,
+        "revisions": "Unlimited",
+        "isPopular": false
+      }
+    }
+  }
+}

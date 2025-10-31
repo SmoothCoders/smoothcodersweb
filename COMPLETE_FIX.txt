@@ -1,0 +1,9 @@
+# ✅ COMPLETE FIX - RUN THIS COMMAND
+
+# This command will:
+# 1. Add missing SEO fields to all services
+# 2. Kill old server
+# 3. Clear cache
+# 4. Start fresh server with new code
+
+cd /Users/mac/Work/Development/SmoothCoders/smoothcoders-app && node scripts/add-missing-seo-fields.js && sleep 2 && pkill -f "next dev" && sleep 2 && rm -rf .next && npm run dev
