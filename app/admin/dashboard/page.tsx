@@ -103,7 +103,7 @@ export default function AdminDashboard() {
 
       const monthlyGrowth = lastMonth > 0 ? ((thisMonth - lastMonth) / lastMonth) * 100 : 0;
 
-      setStats({
+      setAnalytics({
         totalContacts: contacts.success ? contacts.data.length : 0,
         totalPayments,
         totalRevenue,
