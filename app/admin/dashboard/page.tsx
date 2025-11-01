@@ -49,18 +49,34 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
+      console.log('🔄 Fetching dashboard data...');
+      
       // Fetch real stats from APIs
       const [servicesRes, contactsRes, inquiriesRes, ordersRes] = await Promise.all([
         fetch('/api/services'),
         fetch('/api/contact'),
         fetch('/api/inquiries'),
-        fetch('/api/orders/create').catch(() => ({ json: () => ({ success: false, data: [] }) }))
+        fetch('/api/orders/create')
       ]);
+
+      console.log('📡 API Responses:', {
+        services: servicesRes.status,
+        contacts: contactsRes.status,
+        inquiries: inquiriesRes.status,
+        orders: ordersRes.status
+      });
 
       const services = await servicesRes.json();
       const contacts = await contactsRes.json();
       const inquiries = await inquiriesRes.json();
       const orders = await ordersRes.json();
+
+      console.log('📊 Data received:', {
+        services: services.data?.length || 0,
+        contacts: contacts.data?.length || 0,
+        inquiries: inquiries.data?.length || 0,
+        orders: orders.data?.length || 0
+      });
 
       // Calculate real stats
       const pendingCount = inquiries.success ? inquiries.data.filter((i: any) => i.status === 'pending').length : 0;
