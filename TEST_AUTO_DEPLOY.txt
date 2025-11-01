@@ -1,0 +1,5 @@
+This file tests if GitHub Actions auto-deploy is working.
+
+Timestamp: 2025-11-01 15:25 IST
+
+If you see this file on your VPS, auto-deploy is working! ✅
