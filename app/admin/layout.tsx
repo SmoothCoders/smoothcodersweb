@@ -17,11 +17,18 @@ import {
   LogOut,
   Menu,
   X,
+  Briefcase,
+  MapPin,
+  MessageSquare,
+  CreditCard,
+  Globe,
+  Search,
 } from 'lucide-react';
 import { useState } from 'react';
 import { SessionProvider } from 'next-auth/react';
 
-const navigation = [
+// Navigation sections
+const businessManagement = [
   { name: 'Dashboard', href: '/admin/dashboard-new', icon: LayoutDashboard },
   { name: 'Developers', href: '/admin/developers', icon: Code },
   { name: 'Clients', href: '/admin/clients', icon: Building2 },
@@ -29,6 +36,22 @@ const navigation = [
   { name: 'Quotations', href: '/admin/quotations', icon: FileText },
   { name: 'Invoices', href: '/admin/invoices', icon: Receipt },
   { name: 'Activity Log', href: '/admin/activity', icon: Activity },
+];
+
+const websiteManagement = [
+  { name: 'Services', href: '/admin/services', icon: Briefcase },
+  { name: 'Cities', href: '/admin/cities', icon: MapPin },
+  { name: 'Generated Pages', href: '/admin/pages', icon: Globe },
+  { name: 'Inquiries & Chat', href: '/admin/inquiries', icon: MessageSquare },
+  { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
+  { name: 'Blog', href: '/admin/blog', icon: FileText },
+  { name: 'Contacts', href: '/admin/contacts', icon: MessageSquare },
+  { name: 'Payments', href: '/admin/payments', icon: CreditCard },
+];
+
+const systemSettings = [
+  { name: 'Site Settings', href: '/admin/settings', icon: Settings },
+  { name: 'SEO Settings', href: '/admin/seo', icon: Search },
 ];
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
@@ -81,10 +104,81 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+            {/* Business Management Section */}
             <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mb-3">
-              Main Menu
+              Business Management
             </div>
-            {navigation.map((item) => {
+            {businessManagement.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'text-gray-300 hover:bg-gray-800/50 hover:text-white'
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
+                  )}
+                  <div className={`p-2 rounded-lg ${
+                    isActive 
+                      ? 'bg-white/20' 
+                      : 'bg-gray-800/50 group-hover:bg-gray-700/50'
+                  }`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <span className="font-medium">{item.name}</span>
+                  {isActive && (
+                    <div className="ml-auto w-2 h-2 rounded-full bg-white animate-pulse" />
+                  )}
+                </Link>
+              );
+            })}
+
+            {/* Website Management Section */}
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mt-6 mb-3">
+              Website Management
+            </div>
+            {websiteManagement.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/50'
+                      : 'text-gray-300 hover:bg-gray-800/50 hover:text-white'
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
+                  )}
+                  <div className={`p-2 rounded-lg ${
+                    isActive 
+                      ? 'bg-white/20' 
+                      : 'bg-gray-800/50 group-hover:bg-gray-700/50'
+                  }`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <span className="font-medium">{item.name}</span>
+                  {isActive && (
+                    <div className="ml-auto w-2 h-2 rounded-full bg-white animate-pulse" />
+                  )}
+                </Link>
+              );
+            })}
+
+            {/* System Settings Section */}
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 mt-6 mb-3">
+              System Settings
+            </div>
+            {systemSettings.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
               return (
