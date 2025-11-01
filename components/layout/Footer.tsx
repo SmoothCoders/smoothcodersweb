@@ -189,18 +189,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Admin Link */}
-      <div className="bg-gray-950 py-2">
-        <div className="container mx-auto px-4 text-center">
-          <Link 
-            href="/admin" 
-            className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
-          >
-            Admin Portal
-          </Link>
-        </div>
-      </div>
     </footer>
   );
 }

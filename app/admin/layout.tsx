@@ -121,15 +121,18 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
           {/* User section */}
           <div className="p-4 border-t border-gray-700/50 bg-gray-900/50">
-            <div className="flex items-center gap-3 mb-3 p-3 rounded-xl bg-gray-800/50">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg">
+            <Link 
+              href="/admin/profile" 
+              className="flex items-center gap-3 mb-3 p-3 rounded-xl bg-gray-800/50 hover:bg-gray-800 transition-all cursor-pointer group"
+            >
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg group-hover:scale-110 transition-transform">
                 {session?.user?.name?.charAt(0) || 'A'}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium truncate">{session?.user?.name || 'Admin'}</div>
-                <div className="text-xs text-gray-400 truncate">{session?.user?.email}</div>
+                <div className="text-sm font-medium truncate group-hover:text-blue-400 transition-colors">{session?.user?.name || 'Admin'}</div>
+                <div className="text-xs text-gray-400 truncate">{ session?.user?.email}</div>
               </div>
-            </div>
+            </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/admin/login' })}
               className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all group"

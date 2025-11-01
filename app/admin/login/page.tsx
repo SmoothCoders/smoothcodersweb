@@ -109,15 +109,6 @@ export default function AdminLoginPage() {
               )}
             </Button>
           </form>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 text-center">
-              <strong>Demo Credentials:</strong><br />
-              Email: admin@smoothcoders.com<br />
-              Password: SmoothAdmin@2024
-            </p>
-          </div>
         </div>
       </motion.div>
     </div>
