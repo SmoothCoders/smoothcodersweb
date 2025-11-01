@@ -7,7 +7,7 @@ import ActivityLog from '@/lib/models/ActivityLog';
 // GET - Fetch single developer
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession();
@@ -21,7 +21,8 @@ export async function GET(
 
     await connectDB();
 
-    const developer = await Developer.findById(params.id);
+    const { id } = await params;
+    const developer = await Developer.findById(id);
 
     if (!developer) {
       return NextResponse.json(
@@ -46,7 +47,7 @@ export async function GET(
 // PUT - Update developer
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession();
@@ -61,9 +62,10 @@ export async function PUT(
     await connectDB();
 
     const body = await request.json();
+    const { id } = await params;
     
     const developer = await Developer.findByIdAndUpdate(
-      params.id,
+      id,
       body,
       { new: true, runValidators: true }
     );
@@ -103,7 +105,7 @@ export async function PUT(
 // DELETE - Delete developer
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession();
@@ -117,7 +119,8 @@ export async function DELETE(
 
     await connectDB();
 
-    const developer = await Developer.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const developer = await Developer.findByIdAndDelete(id);
 
     if (!developer) {
       return NextResponse.json(
