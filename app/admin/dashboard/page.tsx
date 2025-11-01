@@ -6,38 +6,34 @@ import { useRouter } from 'next/navigation';
 import { 
   Users, 
   DollarSign, 
-  ShoppingBag, 
-  Mail, 
+  Briefcase, 
+  FileText, 
+  Receipt,
   TrendingUp,
   Activity,
   Loader2,
-  MessageSquare,
-  Eye,
   ArrowUpRight,
-  ArrowDownRight,
   Clock,
   CheckCircle2,
-  AlertCircle,
-  Zap
+  AlertTriangle,
+  Code,
+  Building2,
+  CreditCard,
+  Target,
+  Zap,
+  BarChart3,
+  Eye,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [stats, setStats] = useState({
-    totalContacts: 0,
-    totalPayments: 0,
-    totalRevenue: 0,
-    totalServices: 0,
-    totalInquiries: 0,
-    pendingInquiries: 0,
-    activeProjects: 0,
-    monthlyGrowth: 0,
-  });
+  const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [activityLogs, setActivityLogs] = useState<any[]>([]);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
