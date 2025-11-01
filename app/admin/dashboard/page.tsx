@@ -50,38 +50,127 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       // Fetch real stats from APIs
-      const [servicesRes, contactsRes, inquiriesRes] = await Promise.all([
+      const [servicesRes, contactsRes, inquiriesRes, ordersRes] = await Promise.all([
         fetch('/api/services'),
         fetch('/api/contact'),
-        fetch('/api/inquiries')
+        fetch('/api/inquiries'),
+        fetch('/api/orders/create').catch(() => ({ json: () => ({ success: false, data: [] }) }))
       ]);
 
       const services = await servicesRes.json();
       const contacts = await contactsRes.json();
       const inquiries = await inquiriesRes.json();
+      const orders = await ordersRes.json();
 
+      // Calculate real stats
       const pendingCount = inquiries.success ? inquiries.data.filter((i: any) => i.status === 'pending').length : 0;
       const activeCount = inquiries.success ? inquiries.data.filter((i: any) => i.status === 'active').length : 0;
+      
+      // Calculate total revenue from orders (if available)
+      let totalRevenue = 0;
+      let totalPayments = 0;
+      if (orders.success && Array.isArray(orders.data)) {
+        totalPayments = orders.data.length;
+        totalRevenue = orders.data.reduce((sum: number, order: any) => {
+          return sum + (order.amount || 0);
+        }, 0);
+      }
+
+      // Calculate monthly growth (compare this month vs last month inquiries)
+      const now = new Date();
+      const thisMonth = inquiries.success ? inquiries.data.filter((i: any) => {
+        const date = new Date(i.createdAt);
+        return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      }).length : 0;
+
+      const lastMonth = inquiries.success ? inquiries.data.filter((i: any) => {
+        const date = new Date(i.createdAt);
+        const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        return date.getMonth() === lastMonthDate.getMonth() && date.getFullYear() === lastMonthDate.getFullYear();
+      }).length : 0;
+
+      const monthlyGrowth = lastMonth > 0 ? ((thisMonth - lastMonth) / lastMonth) * 100 : 0;
 
       setStats({
         totalContacts: contacts.success ? contacts.data.length : 0,
-        totalPayments: 28,
-        totalRevenue: 1250000,
+        totalPayments,
+        totalRevenue,
         totalServices: services.success ? services.data.length : 0,
         totalInquiries: inquiries.success ? inquiries.data.length : 0,
         pendingInquiries: pendingCount,
         activeProjects: activeCount,
-        monthlyGrowth: 12.5,
+        monthlyGrowth: Number(monthlyGrowth.toFixed(1)),
       });
 
-      // Mock recent activity
-      setRecentActivity([
-        { type: 'inquiry', message: 'New inquiry for Website Development', time: '5 min ago', icon: MessageSquare, color: 'text-blue-600' },
-        { type: 'contact', message: 'New contact form submission', time: '15 min ago', icon: Mail, color: 'text-green-600' },
-        { type: 'inquiry', message: 'Quote accepted for E-commerce', time: '1 hour ago', icon: CheckCircle2, color: 'text-purple-600' },
-        { type: 'payment', message: 'Payment received ₹50,000', time: '2 hours ago', icon: DollarSign, color: 'text-emerald-600' },
+      // Build real recent activity from actual data
+      const activities: any[] = [];
+
+      // Add recent inquiries (last 2)
+      if (inquiries.success && inquiries.data.length > 0) {
+        const recentInquiries = [...inquiries.data]
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 2);
+
+        recentInquiries.forEach((inq: any) => {
+          const timeDiff = Date.now() - new Date(inq.createdAt).getTime();
+          const timeAgo = timeDiff < 3600000 
+            ? `${Math.floor(timeDiff / 60000)} min ago`
+            : timeDiff < 86400000
+            ? `${Math.floor(timeDiff / 3600000)} hour${Math.floor(timeDiff / 3600000) > 1 ? 's' : ''} ago`
+            : `${Math.floor(timeDiff / 86400000)} day${Math.floor(timeDiff / 86400000) > 1 ? 's' : ''} ago`;
+
+          activities.push({
+            type: 'inquiry',
+            message: `New inquiry: ${inq.service || 'General Inquiry'}`,
+            time: timeAgo,
+            icon: MessageSquare,
+            color: 'text-blue-600'
+          });
+        });
+      }
+
+      // Add recent contacts (last 2)
+      if (contacts.success && contacts.data.length > 0) {
+        const recentContacts = [...contacts.data]
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 2);
+
+        recentContacts.forEach((contact: any) => {
+          const timeDiff = Date.now() - new Date(contact.createdAt).getTime();
+          const timeAgo = timeDiff < 3600000 
+            ? `${Math.floor(timeDiff / 60000)} min ago`
+            : timeDiff < 86400000
+            ? `${Math.floor(timeDiff / 3600000)} hour${Math.floor(timeDiff / 3600000) > 1 ? 's' : ''} ago`
+            : `${Math.floor(timeDiff / 86400000)} day${Math.floor(timeDiff / 86400000) > 1 ? 's' : ''} ago`;
+
+          activities.push({
+            type: 'contact',
+            message: `Contact from ${contact.name}`,
+            time: timeAgo,
+            icon: Mail,
+            color: 'text-green-600'
+          });
+        });
+      }
+
+      // Sort by most recent and limit to 4
+      const sortedActivities = activities
+        .sort((a, b) => {
+          const aTime = a.time.includes('min') ? parseInt(a.time) : 
+                       a.time.includes('hour') ? parseInt(a.time) * 60 : 
+                       parseInt(a.time) * 1440;
+          const bTime = b.time.includes('min') ? parseInt(b.time) : 
+                       b.time.includes('hour') ? parseInt(b.time) * 60 : 
+                       parseInt(b.time) * 1440;
+          return aTime - bTime;
+        })
+        .slice(0, 4);
+
+      setRecentActivity(sortedActivities.length > 0 ? sortedActivities : [
+        { type: 'info', message: 'No recent activity', time: 'Just now', icon: AlertCircle, color: 'text-gray-400' }
       ]);
     } catch (error) {
+      console.error('Error fetching stats:', error);
     } finally {
       setLoading(false);
     }
