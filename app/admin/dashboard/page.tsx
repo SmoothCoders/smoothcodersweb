@@ -41,15 +41,11 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/admin/login');
-    }
-  }, [status, router]);
-
-  useEffect(() => {
-    if (status === 'authenticated') {
+      router.replace('/admin/login');
+    } else if (status === 'authenticated') {
       fetchStats();
     }
-  }, [status]);
+  }, [status, router]);
 
   const fetchStats = async () => {
     try {
@@ -91,15 +87,17 @@ export default function AdminDashboard() {
     }
   };
 
-  if (status === 'loading' || loading) {
+  // Show loader while checking auth or loading data
+  if (status === 'loading' || status === 'unauthenticated' || loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
-
-  if (status === 'unauthenticated') {
+  
+  // Only render dashboard if authenticated
+  if (status !== 'authenticated') {
     return null;
   }
 
