@@ -230,9 +230,6 @@ const SettingsSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Ensure only one settings document exists
-SettingsSchema.index({ _id: 1 }, { unique: true });
-
 const Settings = mongoose.models.Settings || mongoose.model('Settings', SettingsSchema);
 
 export default Settings;

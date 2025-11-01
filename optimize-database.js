@@ -2,12 +2,28 @@
 // Run: node optimize-database.js
 
 const mongoose = require('mongoose');
-require('dotenv').config({ path: '.env.local' });
+const fs = require('fs');
+const path = require('path');
+
+// Try to load from .env.local, .env.production, or .env
+const envFiles = ['.env.local', '.env.production', '.env'];
+for (const envFile of envFiles) {
+  const envPath = path.join(__dirname, envFile);
+  if (fs.existsSync(envPath)) {
+    require('dotenv').config({ path: envPath });
+    console.log(`📄 Loaded environment from ${envFile}`);
+    break;
+  }
+}
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   console.error('❌ MONGODB_URI not found in environment variables');
+  console.error('💡 Please ensure one of these files exists with MONGODB_URI:');
+  console.error('   - .env.local');
+  console.error('   - .env.production');
+  console.error('   - .env');
   process.exit(1);
 }
 
