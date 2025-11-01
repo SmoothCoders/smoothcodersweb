@@ -58,9 +58,9 @@ async function optimizeDatabase() {
           console.log(`  ⚠ Compact not supported or failed`);
         }
 
-        // Rebuild indexes
-        await db.collection(collectionName).reIndex();
-        console.log(`  ✓ Indexes rebuilt`);
+        // Note: reIndex() is deprecated in MongoDB 6.0+
+        // Indexes are automatically maintained by MongoDB
+        console.log(`  ✓ Indexes maintained`);
 
         // Get stats after
         const statsAfter = await db.command({ collStats: collectionName });
