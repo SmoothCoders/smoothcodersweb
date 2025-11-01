@@ -5,33 +5,30 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
-  Briefcase, 
+  Users, 
+  Building2, 
   FolderOpen, 
-  MessageSquare, 
   FileText, 
-  CreditCard, 
+  Receipt, 
+  Activity,
+  BarChart3,
+  Code,
   Settings, 
   LogOut,
   Menu,
   X,
-  MapPin
 } from 'lucide-react';
 import { useState } from 'react';
 import { SessionProvider } from 'next-auth/react';
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-  { name: 'Services', href: '/admin/services', icon: Briefcase },
-  { name: 'Cities', href: '/admin/cities', icon: MapPin },
-  { name: 'Generated Pages', href: '/admin/pages', icon: FileText },
-  { name: 'Inquiries & Chat', href: '/admin/inquiries', icon: MessageSquare },
+  { name: 'Dashboard', href: '/admin/dashboard-new', icon: LayoutDashboard },
+  { name: 'Developers', href: '/admin/developers', icon: Code },
+  { name: 'Clients', href: '/admin/clients', icon: Building2 },
   { name: 'Projects', href: '/admin/projects', icon: FolderOpen },
-  { name: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
-  { name: 'Blog', href: '/admin/blog', icon: FileText },
-  { name: 'Contacts', href: '/admin/contacts', icon: MessageSquare },
-  { name: 'Payments', href: '/admin/payments', icon: CreditCard },
-  { name: 'Site Settings', href: '/admin/settings', icon: Settings },
-  { name: 'SEO Settings', href: '/admin/seo', icon: Settings },
+  { name: 'Quotations', href: '/admin/quotations', icon: FileText },
+  { name: 'Invoices', href: '/admin/invoices', icon: Receipt },
+  { name: 'Activity Log', href: '/admin/activity', icon: Activity },
 ];
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
@@ -63,7 +60,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-            <Link href="/admin/dashboard" className="flex items-center gap-3 group">
+            <Link href="/admin/dashboard-new" className="flex items-center gap-3 group">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                 <span className="text-xl font-bold">SC</span>
               </div>
