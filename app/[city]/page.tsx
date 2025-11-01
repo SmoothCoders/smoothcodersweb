@@ -5,12 +5,15 @@ type Props = {
   params: { city: string }
 }
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://smoothcoders.com';
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cityName = params.city.split('-').map(word => 
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ');
   
   return {
+    metadataBase: new URL(siteUrl),
     title: `${cityName} - Digital Services | SmoothCoders`,
     description: `Professional web development and digital marketing services in ${cityName}. Expert solutions for businesses.`,
   };
